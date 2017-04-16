@@ -3,11 +3,12 @@ FROM node:alpine
 WORKDIR /hexo
 
 RUN \
-  apk add --no-cache git openssh-client \
+  apk add --no-cache git openssh-client coreutils \
   && npm config set unsafe-perm true \
-  && npm install hexo-cli -g \
+  && npm install yarn \
+  && yarn global add hexo-cli \
   && hexo init . \
-  && npm install
+  && yarn install
 
 VOLUME ["/hexo/source", "/hexo/themes", "/root/.ssh"]
 
@@ -17,4 +18,4 @@ COPY entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ['/usr/local/bin/hexo', 'server']
+CMD ["/usr/local/bin/hexo", "server", "--debug"]
